@@ -1,47 +1,29 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 3.75f;
+    [SerializeField] private PlayerConfig config;
     [SerializeField] private Rigidbody2D rb;
-    
-    [SerializeField] private InputActionAsset inputActions;
-    private InputAction moveAction;
-    private Vector2 moveInput;
 
-    void Awake()
-    {
-        if (inputActions != null)
-        {
-            var map = inputActions.FindActionMap("Player");
-            if (map != null) moveAction = map.FindAction("Move");
-        }
-    }
+    private IMoveInput input;
+    private Vector2 velocity;
 
-    void OnEnable()
+    // Pintu masuk Dependency Injection
+    public void Construct(IMoveInput moveInput)
     {
-        if (moveAction != null) moveAction.Enable();
-    }
-
-    void OnDisable()
-    {
-        if (moveAction != null) moveAction.Disable();
+        input = moveInput;
     }
 
     void Update()
     {
-        if (moveAction != null)
-        {
-            moveInput = moveAction.ReadValue<Vector2>();
-        }
+        if (input == null) return;
+
+        float speed = input.IsRunning ? config.RunSpeed : config.WalkSpeed;
+        velocity = input.Move * speed;
     }
 
     void FixedUpdate()
     {
-        if (rb != null)
-        {
-            rb.linearVelocity = moveInput * moveSpeed;
-        }
+        rb.linearVelocity = velocity;
     }
 }
