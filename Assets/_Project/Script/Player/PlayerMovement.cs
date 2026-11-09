@@ -12,6 +12,15 @@ public class PlayerMovement : MonoBehaviour
     // Properti Facing agar bisa dibaca oleh PlayerInteractor
     public Vector2 Facing { get; private set; } = Vector2.down;
 
+    private void Awake()
+    {
+        // Fallback otomatis agar input tidak null jika belum di-inject installer
+        if (input == null)
+        {
+            input = new InputSystemMoveInput();
+        }
+    }
+
     public void Construct(IMoveInput moveInput)
     {
         input = moveInput;
@@ -55,5 +64,14 @@ public class PlayerMovement : MonoBehaviour
         return Mathf.Abs(v.x) > Mathf.Abs(v.y)
             ? new Vector2(Mathf.Sign(v.x), 0f)
             : new Vector2(0f, Mathf.Sign(v.y));
+    }
+
+    private void OnDisable()
+    {
+        // Mencegah memory leak dan warning input action saat pindah scene
+        if (input is System.IDisposable disposable)
+        {
+            disposable.Dispose();
+        }
     }
 }

@@ -3,19 +3,19 @@ using UnityEngine;
 public class WorldInstaller : MonoBehaviour
 {
     [SerializeField] private PlayerMovement player;
-    [SerializeField] private PlayerInteractor interactor; // Tambahkan referensi interactor
+    [SerializeField] private PlayerInteractor interactor;
+    [SerializeField] private MonsterData debugStarter;
 
     public void Install(IMoveInput moveInput, IActionInput actionInput)
     {
-        player.Construct(moveInput);
-        
-        if (interactor != null)
+        if (player != null && moveInput != null)
         {
-            interactor.Construct(actionInput); // Suntikkan action input ke interactor
+            player.Construct(moveInput);
         }
-        else
+
+        if (interactor != null && actionInput != null)
         {
-            Debug.LogError("PlayerInteractor belum di-assign di Inspector WorldInstaller!");
+            interactor.Construct(actionInput);
         }
     }
 }

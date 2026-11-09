@@ -1,17 +1,35 @@
 using UnityEngine;
+using System;
 
-public class InputSystemMoveInput : IMoveInput
+public class InputSystemMoveInput : IMoveInput, IDisposable
 {
     private InputSystem_Actions inputActions;
 
     public InputSystemMoveInput()
     {
-        inputActions = new InputSystem_Actions();
-        inputActions.Player.Enable(); 
+        if (inputActions == null)
+        {
+            inputActions = new InputSystem_Actions();
+        }
+
+        // Aktifkan asset secara keseluruhan dan map Player-nya
+        inputActions.Enable();
+        inputActions.Player.Enable();
     }
 
     public Vector2 Move => inputActions.Player.Move.ReadValue<Vector2>();
-    
-    // Untuk sementara dimatikan dulu agar tidak error
-    public bool IsRunning => false; 
+
+    public bool IsRunning => false;
+
+    // Tambahkan method Dispose untuk mematikan input actions dan mencegah memory leak
+    public void Dispose()
+    {
+        if (inputActions != null)
+        {
+            inputActions.Player.Disable();
+            inputActions.Disable();
+            inputActions.Dispose();
+            inputActions = null;
+        }
+    }
 }
