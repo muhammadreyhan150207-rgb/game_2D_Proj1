@@ -1,9 +1,12 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class GameBootstrap : MonoBehaviour
 {
     [SerializeField] private string firstScene = "Scn_World";
+    private IMoveInput moveInput;
+    private IActionInput actionInput; // Tambahan untuk interaksi
 
     void Awake()
     {
@@ -16,20 +19,21 @@ public class GameBootstrap : MonoBehaviour
 
     void Start()
     {
-        // Ambil input dan pasang ke WorldInstaller
-        IMoveInput moveInput = new InputSystemMoveInput();
-        
+        // Ambil input gerak dan input aksi/interaksi
+        moveInput = new InputSystemMoveInput();
+        actionInput = new InputSystemActionInput(); // Inisialisasi input interaksi
+
         // Beri sedikit jeda frame agar WorldInstaller siap
-        StartCoroutine(InstallRoutine(moveInput));
+        StartCoroutine(InstallRoutine(moveInput, actionInput));
     }
 
-    System.Collections.IEnumerator InstallRoutine(IMoveInput moveInput)
+    System.Collections.IEnumerator InstallRoutine(IMoveInput moveInput, IActionInput actionInput)
     {
         yield return null; // Tunggu 1 frame
         WorldInstaller installer = FindAnyObjectByType<WorldInstaller>();
         if (installer != null)
         {
-            installer.Install(moveInput);
+            installer.Install(moveInput, actionInput); // Kirim keduanya ke WorldInstaller
         }
         else
         {

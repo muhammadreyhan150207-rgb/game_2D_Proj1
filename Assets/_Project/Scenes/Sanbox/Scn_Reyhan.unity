@@ -151,9 +151,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f978ff86cc63b5644a12c3c11ee3b7b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  moveSpeed: 3.75
+  config: {fileID: 0}
   rb: {fileID: 792709669}
-  inputActions: {fileID: -944628639613478452, guid: 601e2a1071ab4414c986c712e680e090, type: 3}
 --- !u!61 &792709668
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -311,7 +310,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1546709895}
   - component: {fileID: 1546709894}
-  - component: {fileID: 1546709893}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -319,14 +317,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1546709893
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1546709892}
-  m_Enabled: 1
 --- !u!20 &1546709894
 Camera:
   m_ObjectHideFlags: 0
